@@ -12,6 +12,7 @@ import axios from "axios";
 import moment from "moment";
 import Chip from "@mui/material/Chip";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Link } from "react-router-dom";
 
 function TabPanel(props) {
   let { children, value, index, ...other } = props;
@@ -117,8 +118,6 @@ class Home extends React.Component {
                         aria-label="basic tabs example"
                       >
                         <Tab label="Global content" />
-                        {/* <Tab label="Item Two" />
-                        <Tab label="Item Three" /> */}
                       </Tabs>
                     </Box>
                     <TabPanel value={this.state.value} index={0}>
@@ -133,7 +132,9 @@ class Home extends React.Component {
                                   description,
                                   tagList,
                                   favoritesCount,
+                                  slug
                                 } = item;
+                                console.log(slug)
                                 return (
                                   <Card sx={{ width: "100%", margin: "10px" }}>
                                     <CardContent>
@@ -180,10 +181,14 @@ class Home extends React.Component {
                                           </Grid>
                                         </Grid>
                                       </Grid>
-
-                                      <Typography variant="h6" component="div">
-                                        {title}
-                                      </Typography>
+                                      <Link to={`${slug}`}>
+                                        <Typography
+                                          variant="h6"
+                                          component="div"
+                                        >
+                                          {title}
+                                        </Typography>
+                                      </Link>
                                       <Typography
                                         sx={{ fontSize: 14 }}
                                         color="text.secondary"

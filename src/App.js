@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/accounts/login/Login";
 import SignUp from "./components/accounts/signUp/SignUp";
@@ -12,7 +12,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import { NavLink } from "react-router-dom";
-export default function App() {
+import Article from "./components/article/Article";
+class App extends Component {
+  render(){
   return (
     <>
       <AppBar component="nav" sx={{ background: "#cdd0d1", color: "black" }}>
@@ -31,18 +33,13 @@ export default function App() {
             Medium
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <NavLink to="/">
+            <NavLink to="/" style={{ textDecoration: "none" }}>
               <Button sx={{ color: "black" }}>Home</Button>
             </NavLink>
-            <NavLink to="login">
-              <Button
-                sx={{ color: "black" }}
-                style={{ textDecoration: "none" }}
-              >
-                Login
-              </Button>
+            <NavLink to="login" style={{ textDecoration: "none" }}>
+              <Button sx={{ color: "black" }}>Login</Button>
             </NavLink>
-            <NavLink to="sign-up">
+            <NavLink to="sign-up" style={{ textDecoration: "none" }}>
               <Button sx={{ color: "black" }}>SignUp</Button>
             </NavLink>
           </Box>
@@ -52,7 +49,11 @@ export default function App() {
         <Route path="login" element={<Login />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="/" element={<Home />} />
+        <Route path=":slug" element={<Article />} />
       </Routes>
     </>
   );
 }
+}
+
+export default App
