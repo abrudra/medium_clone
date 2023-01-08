@@ -1,52 +1,94 @@
-import { Component } from "react";
-
-import AppBar from "@mui/material/AppBar";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-
-import Toolbar from "@mui/material/Toolbar";
+import Grid from "@mui/material/Grid";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";  
-import { NavLink } from "react-router-dom";
+import Container from "@mui/material/Container";
+import moment from "moment";
+import Chip from "@mui/material/Chip";
 
-class Article extends Component{
-    render(){
-        return (
-          <AppBar
-            component="nav"
-            sx={{ background: "#cdd0d1", color: "black" }}
-          >
-            <Toolbar>
+function Article() {
+  const { slug } = useParams();
+  const [response, setResponse] = useState(null);
+  useEffect(() => {
+    const apiCall = (data) => {
+      return axios
+        .get(`https://api.realworld.io/api/articles/${data}`)
+        .then((response) => {
+          setResponse(response.data.article);
+        })
+        .catch((error) => {
+          console.log("error");
+        });
+    };
+    apiCall(slug);
+  }, [slug]);
+  // let { username, image } = response.article.author;
+  // let { title, description, tagList, favoritesCount } = response.article;
+  return (
+    <Container component="main">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {response ? (
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography variant="h6" component="div">
+                    {response.title}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={2}>
+                      <img
+                        src={response.author.image}
+                        alt="auth"
+                        style={{
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={6}>
+                      {response.author.username}
+                      <br />
+                      {moment(response.updatedAt).format("llll")}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
               <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { sm: "flex", alignItems: "center" },
-                }}
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
               >
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/5968/5968885.png"
-                  width="40px"
-                  alt="image1"
-                  style={{ marginRight: "10px" }}
-                />
-                Medium
+                {response.body}
               </Typography>
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                <NavLink to="/" style={{ textDecoration: "none" }}>
-                  <Button sx={{ color: "black" }}>Home</Button>
-                </NavLink>
-                <NavLink to="login" style={{ textDecoration: "none" }}>
-                  <Button sx={{ color: "black" }}>Login</Button>
-                </NavLink>
-                <NavLink to="sign-up" style={{ textDecoration: "none" }}>
-                  <Button sx={{ color: "black" }}>SignUp</Button>
-                </NavLink>
-              </Box>
-            </Toolbar>
-          </AppBar>
-        );
-    }
+            </Grid>
+            <Grid item xs={12}>
+              {response.tagList.map((items) => {
+                return (
+                  <Chip
+                    label={items}
+                    variant="outlined"
+                    style={{ margin: "5px" }}
+                  />
+                );
+              })}
+            </Grid>
+          </Grid>
+        ) : null}
+      </Box>
+    </Container>
+  );
 }
-
 export default Article;

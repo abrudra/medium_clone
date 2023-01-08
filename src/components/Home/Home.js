@@ -41,11 +41,18 @@ class Home extends React.Component {
       value: 0,
       articleData: [],
       tagList: {},
+      filteredTagData: {},
       error: "",
+      visiblefilteredTab: false,
+      tagToFilter: "",
     };
   }
-  handleChange = (newValue) => {
-    this.setState({ value: newValue });
+  handleChange = () => {
+    this.setState({ value: this.state.value === 0 ? 1 : 0 });
+    if (this.state.value === 1) {
+      console.log(this.state.value);
+      this.setState({ visiblefilteredTab: false });
+    }
   };
   a11yProps(index) {
     return {
@@ -54,7 +61,19 @@ class Home extends React.Component {
     };
   }
   handleClick = (tag) => {
-    console.log(tag);
+    this.setState({ visiblefilteredTab: true, value: 1 });
+    axios
+      .get(`https://api.realworld.io/api/articles?tag=${tag}&limit=10&offset=0`)
+      .then((response) => {
+        this.setState({
+          filteredTagData: response.data,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error: "Data fetching error",
+        });
+      });
   };
   componentDidMount() {
     axios
@@ -118,12 +137,17 @@ class Home extends React.Component {
                         aria-label="basic tabs example"
                       >
                         <Tab label="Global content" />
+                        {this.state.visiblefilteredTab ? (
+                          <Tab label={`#${this.state.tagToFilter}`} />
+                        ) : null}
                       </Tabs>
                     </Box>
-                    <TabPanel value={this.state.value} index={0}>
+                    <TabPanel
+                      value={this.state.value === 0 ? this.state.value : null}
+                      index={0}
+                    >
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
-                          {console.log(this.state.articleData.articles)}
                           {this.state.articleData.articles
                             ? this.state.articleData.articles.map((item) => {
                                 let { username, image } = item.author;
@@ -132,9 +156,8 @@ class Home extends React.Component {
                                   description,
                                   tagList,
                                   favoritesCount,
-                                  slug
+                                  slug,
                                 } = item;
-                                console.log(slug)
                                 return (
                                   <Card sx={{ width: "100%", margin: "10px" }}>
                                     <CardContent>
@@ -181,7 +204,7 @@ class Home extends React.Component {
                                           </Grid>
                                         </Grid>
                                       </Grid>
-                                      <Link to={`${slug}`}>
+                                      <Link to={`/article/${slug}`}>
                                         <Typography
                                           variant="h6"
                                           component="div"
@@ -228,11 +251,118 @@ class Home extends React.Component {
                         </Grid>
                       </Grid>
                     </TabPanel>
-                    <TabPanel value={this.state.value} index={1}>
-                      Item Two
-                    </TabPanel>
-                    <TabPanel value={this.state.value} index={2}>
-                      Item Three
+                    <TabPanel
+                      value={this.state.value === 1 ? this.state.value : null}
+                      index={1}
+                    >
+                      <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          {this.state.filteredTagData.articles
+                            ? this.state.filteredTagData.articles.map(
+                                (item) => {
+                                  let { username, image } = item.author;
+                                  let {
+                                    title,
+                                    description,
+                                    tagList,
+                                    favoritesCount,
+                                    slug,
+                                  } = item;
+                                  return (
+                                    <Card
+                                      sx={{ width: "100%", margin: "10px" }}
+                                    >
+                                      <CardContent>
+                                        <Grid container spacing={2}>
+                                          <Grid item xs={12}>
+                                            <Grid container spacing={2}>
+                                              <Grid item xs={6}>
+                                                <Grid container spacing={2}>
+                                                  <Grid item xs={2}>
+                                                    <img
+                                                      src={image}
+                                                      alt="auth"
+                                                      style={{
+                                                        borderRadius: "50%",
+                                                      }}
+                                                    />
+                                                  </Grid>
+                                                  <Grid item xs={6}>
+                                                    {username}
+                                                    <br />
+                                                    {moment(
+                                                      item.updatedAt
+                                                    ).format("llll")}
+                                                  </Grid>
+                                                </Grid>
+                                              </Grid>
+                                              <Grid
+                                                item
+                                                xs={6}
+                                                style={{
+                                                  display: "flex",
+                                                  flexDirection: "row-reverse",
+                                                }}
+                                              >
+                                                <Button
+                                                  variant="outlined"
+                                                  startIcon={
+                                                    <FavoriteBorderIcon />
+                                                  }
+                                                >
+                                                  {favoritesCount}
+                                                </Button>
+                                              </Grid>
+                                            </Grid>
+                                          </Grid>
+                                        </Grid>
+                                        <Link to={`/article/${slug}`}>
+                                          <Typography
+                                            variant="h6"
+                                            component="div"
+                                          >
+                                            {title}
+                                          </Typography>
+                                        </Link>
+                                        <Typography
+                                          sx={{ fontSize: 14 }}
+                                          color="text.secondary"
+                                          gutterBottom
+                                        >
+                                          {description}
+                                        </Typography>
+                                      </CardContent>
+                                      <CardActions>
+                                        <Grid container spacing={2}>
+                                          <Grid item xs={6}>
+                                            <span> Read More..</span>
+                                          </Grid>
+                                          <Grid
+                                            item
+                                            xs={6}
+                                            style={{
+                                              display: "flex",
+                                              flexDirection: "row-reverse",
+                                            }}
+                                          >
+                                            {tagList.map((items) => {
+                                              return (
+                                                <Chip
+                                                  label={items}
+                                                  variant="outlined"
+                                                />
+                                              );
+                                            })}
+                                          </Grid>
+                                        </Grid>
+                                      </CardActions>
+                                    </Card>
+                                  );
+                                }
+                              )
+                            : null}
+                        </Grid>
+                      </Grid>
                     </TabPanel>
                   </Box>
                 </Grid>
@@ -246,7 +376,10 @@ class Home extends React.Component {
                       return (
                         <Chip
                           label={items}
-                          onClick={() => this.handleClick(items)}
+                          onClick={() => {
+                            this.setState({ tagToFilter: items });
+                            this.handleClick(items);
+                          }}
                           style={{ margin: "5px" }}
                         />
                       );
