@@ -19,22 +19,28 @@ class App extends Component {
       <>
         <AppBar component="nav" sx={{ background: "#cdd0d1", color: "black" }}>
           <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                flexGrow: 1,
-                display: { sm: "flex", alignItems: "center" },
-              }}
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/5968/5968885.png"
-                width="40px"
-                alt="image1"
-                style={{ marginRight: "10px" }}
-              />
-              Medium
-            </Typography>
+            
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  flexGrow: 1,
+                  display: { sm: "flex", alignItems: "center" },
+                }}
+              > 
+               <NavLink to="/" style={{textDecoration:'none' , color: 'Black'}}>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/5968/5968885.png"
+                  width="40px"
+                  alt="image1"
+                  style={{ marginRight: "10px" }}
+                />
+                 </NavLink>
+                <NavLink to="/" style={{textDecoration:'none' , color: 'Black'}}>
+                Medium
+                 </NavLink>
+              </Typography>
+           
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <NavLink to="/" style={{ textDecoration: "none" }}>
                 <Button sx={{ color: "black" }}>Home</Button>

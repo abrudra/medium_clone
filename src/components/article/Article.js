@@ -12,20 +12,17 @@ function Article() {
   const { slug } = useParams();
   const [response, setResponse] = useState(null);
   useEffect(() => {
-    const apiCall = (data) => {
-      return axios
-        .get(`https://api.realworld.io/api/articles/${data}`)
-        .then((response) => {
-          setResponse(response.data.article);
-        })
-        .catch((error) => {
-          console.log("error");
-        });
+    const apiCall = async (data) => {
+      try {
+        const response = await axios
+          .get(`https://api.realworld.io/api/articles/${data}`);
+        setResponse(response.data.article);
+      } catch (error) {
+        console.log("error");
+      }
     };
     apiCall(slug);
   }, [slug]);
-  // let { username, image } = response.article.author;
-  // let { title, description, tagList, favoritesCount } = response.article;
   return (
     <Container component="main">
       <Box
