@@ -33,6 +33,7 @@ class Login extends React.Component {
       },
     };
     const { email, password } = formData.user;
+
     if (email && password) {
       await fetch("https://api.realworld.io/api/users/login", {
         method: "POST",
@@ -50,8 +51,9 @@ class Login extends React.Component {
                 success: { show: true, value: "user register successfully" },
               },
             });
-            console.log(result.user)
-           
+            localStorage.setItem("userDetails", JSON.stringify(result.user));
+            localStorage.setItem("isLoggedIn", "true");
+            window.location.href = "/dashboard";
           } else {
             this.setState({
               formError: {
@@ -65,10 +67,8 @@ class Login extends React.Component {
           console.error("Error:", error);
         });
     }
-
-    console.log(formData);
   };
- 
+
   handleSubmitValidation = () => {
     if (this.state.email === "") {
       this.setState({
@@ -112,7 +112,7 @@ class Login extends React.Component {
                 Sign in
               </Typography>
               {this.state.formError.error.show ? (
-                <p style={{color:"red"}}>Username or Password is wrong..!</p>
+                <p style={{ color: "red" }}>Username or Password is wrong..!</p>
               ) : null}
               <Box
                 component="form"
