@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -14,30 +12,94 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 
 class SignUp extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      username: false,
-      email: false,
-      password: false,
-    };
-  }
-  handleSubmit = (event) => {
+    constructor() {
+      super();
+      this.state = {
+        username: "",
+        email: "",
+        password: "",
+        formError: {
+          success: { show: false, value: "" },
+          error: { show: false, value: "" },
+        },
+      };
+    }
+
+  handleSubmit = async (event) => {
     event.preventDefault();
     let data = new FormData(event.currentTarget);
     let formData = {
-      username: data.get("username"),
-      email: data.get("email"),
-      password: data.get("password"),
+      user: {
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password"),
+      },
     };
-    // if (formData.username && formData.email && formData.password){
-    //   console.log("data present")
-    //   console.log(formData)
-    // }else{
-    //   console.log("data empty")
-    //   console.log(formData)
-    // }
-     console.log(formData);
+    const { username, email, password } = formData.user;
+    if (username && email && password) {
+      await fetch("https://api.realworld.io/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          
+          if (result.user) {
+            this.setState({
+              formError: {
+                error: { show: false, value: "" },
+                success: { show: true, value: "user register successfully" },
+              },
+             
+            });
+             this.props.updateUser(result);
+          } else {
+            this.setState({
+              formError: {
+                success: { show: false, value: "" } ,
+                error: { show: true, value: result.errors.email[0] },
+
+              },
+            });
+          }
+          
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  };
+  handleSubmitValidation = () => {
+    if (this.state.username === "") {
+      this.setState({
+        username: "username is empty",
+      });
+    } else {
+      this.setState({
+        username: "",
+      });
+    }
+    if (this.state.email === "") {
+      this.setState({
+        email: "email is empty",
+      });
+    } else {
+      this.setState({
+        email: "",
+      });
+    }
+    if (this.state.password === "") {
+      this.setState({
+        password: "password is empty",
+      });
+    } else {
+      this.setState({
+        password: "",
+      });
+    }
   };
   render() {
     let theme = createTheme();
@@ -46,6 +108,7 @@ class SignUp extends React.Component {
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+
           <Box
             sx={{
               marginTop: 8,
@@ -60,6 +123,10 @@ class SignUp extends React.Component {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
+            {this.state.formError.success.show ? <p style={{color:"green"}}>User registered successfully.!</p> : null}
+            {this.state.formError.error.show ? (
+              <p style={{color:"red"}}>Already user registered With this email id.</p>
+            ) : null}
             <Box
               component="form"
               noValidate
@@ -75,12 +142,18 @@ class SignUp extends React.Component {
                     fullWidth
                     id="username"
                     label="User Name"
-                    error={this.state.username}
+                    error={
+                      this.state.username !== "NoEmpty"
+                        ? this.state.username
+                        : null
+                    }
                     onChange={(event) => {
                       if (event.target.value.length < 6) {
-                        this.setState({ username: true });
+                        this.setState({
+                          username: "username at least six charactor",
+                        });
                       } else {
-                        this.setState({ username: false });
+                        this.setState({ username: "NoEmpty" });
                       }
                     }}
                     autoFocus
@@ -91,22 +164,27 @@ class SignUp extends React.Component {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address"
+                    label="Email Address" 
                     name="email"
                     autoComplete="email"
-                    error={this.state.email}
+                    error={
+                      this.state.email !== "NoEmpty" ? this.state.email : null
+                    }
                     onChange={(event) => {
                       if (
                         /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
                           event.target.value
                         )
                       ) {
-                        this.setState({ email: false });
+                        this.setState({ email: "NoEmpty" });
                       } else {
-                        this.setState({ email: true });
+                        this.setState({ email: "invalid email" });
                       }
                     }}
                   />
+                  {this.state.email !== "NoEmpty" ? (
+                    <span style={{ color: "red" }}>{this.state.email}</span>
+                  ) : null}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -117,23 +195,24 @@ class SignUp extends React.Component {
                     type="password"
                     id="password"
                     autoComplete="new-password"
-                    error={this.state.password}
+                    error={
+                      this.state.password !== "NoEmpty"
+                        ? this.state.password
+                        : null
+                    }
                     onChange={(event) => {
                       if (event.target.value.length < 6) {
-                        this.setState({ password: true });
+                        this.setState({
+                          password: "password at least six charactor",
+                        });
                       } else {
-                        this.setState({ password: false });
+                        this.setState({ password: "NoEmpty" });
                       }
                     }}
                   />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="to agree to Medium’s Terms of Service and acknowledge."
-                  />
+                  {this.state.password !== "NoEmpty" ? (
+                    <span style={{ color: "red" }}>{this.state.password}</span>
+                  ) : null}
                 </Grid>
               </Grid>
               <Button
@@ -141,48 +220,7 @@ class SignUp extends React.Component {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                // onClick={()=>{
-                  // if(this.state.username && this.state.email && this.state.password){
-                  //   this.setState({
-                  //     username: false,
-                  //     email: false,
-                  //     password: false,
-                  //   });
-                  // }else{
-                  //   this.setState({
-                  //     username: true,
-                  //     email: true,
-                  //     password: true,
-                  //   });
-                  // }
-                  // console.log(this.state.username)
-                  // if(this.state.username){
-                  //   this.setState({
-                  //     username: false
-                  //   })
-                  // }else{
-                  //   this.setState({
-                  //     username: true,
-                  //   });
-                  // }
-                  // console.log(this.state)
-                  // switch (this.state) {
-                  //   case this.state.username === false:
-                  //     return this.setState({
-                  //       username: true,
-                  //     });
-                  //   case this.state.email:
-                  //     return this.setState({
-                  //       email: true,
-                  //     });
-                  //   case this.state.password:
-                  //     return this.setState({
-                  //       password: true,
-                  //     });
-                  //     default : 
-                  //     return null
-                  // }
-                // }}
+                onClick={this.handleSubmitValidation}
               >
                 Sign Up
               </Button>

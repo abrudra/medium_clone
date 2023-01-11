@@ -14,33 +14,50 @@ import Button from "@mui/material/Button";
 import { NavLink } from "react-router-dom";
 import Article from "./components/article/Article";
 class App extends Component {
+    constructor(){
+      super();
+      this.state={
+        isLoggedIn:false,
+        result:null
+      }
+    }
+    upateUser = (result)=>{
+      this.setState({
+        isLoggedIn: true , result
+      })
+    }
   render() {
     return (
       <>
         <AppBar component="nav" sx={{ background: "#cdd0d1", color: "black" }}>
           <Toolbar>
-            
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{
-                  flexGrow: 1,
-                  display: { sm: "flex", alignItems: "center" },
-                }}
-              > 
-               <NavLink to="/" style={{textDecoration:'none' , color: 'Black'}}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                display: { sm: "flex", alignItems: "center" },
+              }}
+            >
+              <NavLink
+                to="/"
+                style={{ textDecoration: "none", color: "Black" }}
+              >
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/5968/5968885.png"
                   width="40px"
                   alt="image1"
                   style={{ marginRight: "10px" }}
                 />
-                 </NavLink>
-                <NavLink to="/" style={{textDecoration:'none' , color: 'Black'}}>
+              </NavLink>
+              <NavLink
+                to="/"
+                style={{ textDecoration: "none", color: "Black" }}
+              >
                 Medium
-                 </NavLink>
-              </Typography>
-           
+              </NavLink>
+            </Typography>
+
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <NavLink to="/" style={{ textDecoration: "none" }}>
                 <Button sx={{ color: "black" }}>Home</Button>
@@ -55,8 +72,11 @@ class App extends Component {
           </Toolbar>
         </AppBar>
         <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="sign-up" element={<SignUp />} />
+          <Route path="login" element={<Login upateUser={this.upateUser} />} />
+          <Route
+            path="sign-up"
+            element={<SignUp upateUser={this.upateUser} />}
+          />
           <Route path="/" element={<Home />} />
           <Route path="/article/:slug" element={<Article />} />
         </Routes>
