@@ -52,6 +52,9 @@ class Dashboard extends React.Component {
     if (this.state.value === 1) {
       this.setState({ visiblefilteredTab: false });
     }
+    if (this.state.value === 2){
+      this.setState({visiblefilteredTab:false})
+    }
   };
   a11yProps(index) {
     return {
@@ -145,6 +148,7 @@ class Dashboard extends React.Component {
                         aria-label="basic tabs example"
                       >
                         <Tab label="your feed" />
+                        <Tab label="Global Feed" />
                         {this.state.visiblefilteredTab ? (
                           <Tab label={`#${this.state.tagToFilter}`} />
                         ) : null}
@@ -270,6 +274,124 @@ class Dashboard extends React.Component {
                         </Grid>
                       </Grid>
                     </TabPanel>
+                    <TabPanel
+                      value={this.state.value === 2  ? this.state.value : null}
+                      index={2}
+                    >
+                      {/* <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                          {this.state.articleData.articles
+                            ? this.state.articleData.articles.map((item) => {
+                                let { username, image } = item.author;
+                                let {
+                                  title,
+                                  description,
+                                  tagList,
+                                  favoritesCount,
+                                  slug,
+                                } = item;
+                                return (
+                                  <Card sx={{ width: "100%", margin: "10px" }}>
+                                    <CardContent>
+                                      <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                          <Grid container spacing={2}>
+                                            <Grid item xs={6}>
+                                              <Grid container spacing={2}>
+                                                <Grid item xs={2}>
+                                                  <img
+                                                    src={image}
+                                                    alt="auth"
+                                                    style={{
+                                                      borderRadius: "50%",
+                                                    }}
+                                                  />
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                  {username}
+                                                  <br />
+                                                  {moment(
+                                                    item.updatedAt
+                                                  ).format("llll")}
+                                                </Grid>
+                                              </Grid>
+                                            </Grid>
+                                            <Grid
+                                              item
+                                              xs={6}
+                                              style={{
+                                                display: "flex",
+                                                flexDirection: "row-reverse",
+                                              }}
+                                            >
+                                              <Button
+                                                variant="outlined"
+                                                startIcon={
+                                                  <FavoriteBorderIcon />
+                                                }
+                                              >
+                                                {favoritesCount}
+                                              </Button>
+                                            </Grid>
+                                          </Grid>
+                                        </Grid>
+                                      </Grid>
+                                      <Link
+                                        to={`/article/${slug}`}
+                                        style={{ textDecoration: "none" }}
+                                      >
+                                        <Typography
+                                          variant="h6"
+                                          component="div"
+                                        >
+                                          {title}
+                                        </Typography>
+                                      </Link>
+                                      <Typography
+                                        sx={{ fontSize: 14 }}
+                                        color="text.secondary"
+                                        gutterBottom
+                                      >
+                                        {description}
+                                      </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                      <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                          <Link
+                                            to={`/article/${slug}`}
+                                            style={{ textDecoration: "none" }}
+                                          >
+                                            <span> Read More..</span>
+                                          </Link>
+                                        </Grid>
+                                        <Grid
+                                          item
+                                          xs={6}
+                                          style={{
+                                            display: "flex",
+                                            flexDirection: "row-reverse",
+                                          }}
+                                        >
+                                          {tagList.map((items) => {
+                                            return (
+                                              <Chip
+                                                label={items}
+                                                variant="outlined"
+                                              />
+                                            );
+                                          })}
+                                        </Grid>
+                                      </Grid>
+                                    </CardActions>
+                                  </Card>
+                                );
+                              })
+                            : null}
+                        </Grid>
+                      </Grid> */}
+                    </TabPanel>
+
                     <TabPanel
                       value={this.state.value === 1 ? this.state.value : null}
                       index={1}
