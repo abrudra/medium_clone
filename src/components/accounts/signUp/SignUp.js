@@ -12,18 +12,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { NavLink } from "react-router-dom";
 
 class SignUp extends React.Component {
-    constructor() {
-      super();
-      this.state = {
-        username: "",
-        email: "",
-        password: "",
-        formError: {
-          success: { show: false, value: "" },
-          error: { show: false, value: "" },
-        },
-      };
-    }
+  constructor() {
+    super();
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      formError: {
+        success: { show: false, value: "" },
+        error: { show: false, value: "" },
+      },
+    };
+  }
 
   handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,26 +46,24 @@ class SignUp extends React.Component {
       })
         .then((response) => response.json())
         .then((result) => {
-          
           if (result.user) {
             this.setState({
               formError: {
                 error: { show: false, value: "" },
                 success: { show: true, value: "user register successfully" },
               },
-             
             });
-             this.props.updateUser(result);
+
+            this.props.updateUser(result);
+          
           } else {
             this.setState({
               formError: {
-                success: { show: false, value: "" } ,
+                success: { show: false, value: "" },
                 error: { show: true, value: result.errors.email[0] },
-
               },
             });
           }
-          
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -123,9 +121,13 @@ class SignUp extends React.Component {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            {this.state.formError.success.show ? <p style={{color:"green"}}>User registered successfully.!</p> : null}
+            {this.state.formError.success.show ? (
+              <p style={{ color: "green" }}>User registered successfully.!</p>
+            ) : null}
             {this.state.formError.error.show ? (
-              <p style={{color:"red"}}>Already user registered With this email id.</p>
+              <p style={{ color: "red" }}>
+                Already user registered With this email id.
+              </p>
             ) : null}
             <Box
               component="form"
@@ -164,7 +166,7 @@ class SignUp extends React.Component {
                     required
                     fullWidth
                     id="email"
-                    label="Email Address" 
+                    label="Email Address"
                     name="email"
                     autoComplete="email"
                     error={
