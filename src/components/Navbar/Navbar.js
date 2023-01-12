@@ -51,7 +51,7 @@ function Navbar({ children }) {
                     sx={{ color: "black" }}
                     onClick={() => {
                       localStorage.clear();
-                      window.location.reload();
+                     window.location.href = "/";
                     }}
                   >
                     {userDetails.username}

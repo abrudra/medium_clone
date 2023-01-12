@@ -279,6 +279,7 @@ class Home extends React.Component {
                     >
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          {this.state.loading ? <Progress /> : null}
                           {this.state.filteredTagData.articles
                             ? this.state.filteredTagData.articles.map(
                                 (item) => {
