@@ -43,6 +43,7 @@ export default class NewPost extends Component {
       .catch((error) => {
         console.error("Error:", error);
       });
+      window.location.href = "/dashboard";
   };
   render() {
     const theme = createTheme();

@@ -69,6 +69,9 @@ function Navbar({ children }) {
                 <NavLink to="sign-up" style={{ textDecoration: "none" }}>
                   <Button sx={{ color: "black" }}>SignUp</Button>
                 </NavLink>
+                <NavLink to="article/" style={{ textDecoration: "none" }}>
+                  
+                </NavLink>
               </>
             )}
           </Box>

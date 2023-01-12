@@ -1,5 +1,6 @@
 import routes from "./components/Router/Router";
 import Navbar from "./components/Navbar/Navbar";
+import { Component } from "react";
 
 
 import {
@@ -34,7 +35,8 @@ const AuthRoute = ({ component: Component, title, ...rest }) => {
   );
 };
 
-function App() {
+class App extends Component {
+  render(){
   return (
     <Router>
       <Navbar>
@@ -62,6 +64,7 @@ function App() {
       </Navbar>
     </Router>
   );
+}
 }
 
 export default App;

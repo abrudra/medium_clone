@@ -4,6 +4,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import Home from "../Home/Home";
 import NewPost from "../NewPost/NewPost";
 import Setting from "../Setting/Setting";
+import Article from "../article/Article";
 class Route {
   constructor({ path, component, title, exact = true, authRequired = true }) {
     this.path = path;
@@ -46,6 +47,12 @@ const routes = [
     path: "/setting",
     title: "setting",
     component: Setting,
+  }),
+  new Route({
+    path: "/article/:slug",
+    title: "article",
+    component: Article,
+    authRequired:false
   }),
 ];
 

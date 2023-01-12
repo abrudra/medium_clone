@@ -203,7 +203,10 @@ class Home extends React.Component {
                                           </Grid>
                                         </Grid>
                                       </Grid>
-                                      <Link to={`/article/${slug}`}>
+                                      <Link
+                                        to={`/article/${slug}`}
+                                        style={{ textDecoration: "none" }}
+                                      >
                                         <Typography
                                           variant="h6"
                                           component="div"
@@ -222,7 +225,12 @@ class Home extends React.Component {
                                     <CardActions>
                                       <Grid container spacing={2}>
                                         <Grid item xs={6}>
-                                          <span> Read More..</span>
+                                          <Link
+                                            to={`/article/${slug}`}
+                                            style={{ textDecoration: "none" }}
+                                          >
+                                            <span> Read More..</span>
+                                          </Link>
                                         </Grid>
                                         <Grid
                                           item

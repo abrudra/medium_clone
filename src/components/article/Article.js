@@ -7,10 +7,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import moment from "moment";
 import Chip from "@mui/material/Chip";
-
+  
 function Article() {
   const { slug } = useParams();
   const [response, setResponse] = useState(null);
+  
   useEffect(() => {
     const apiCall = async (data) => {
       try {
@@ -23,6 +24,7 @@ function Article() {
     };
     apiCall(slug);
   }, [slug]);
+
   return (
     <Container component="main">
       <Box
@@ -35,16 +37,19 @@ function Article() {
       >
         {response ? (
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Typography variant="h6" component="div">
+            <Grid item xs={12} container>
+              <Grid container spacing={5}>
+                <Grid
+                  item
+                 
+                  xs={12}
+                  style={{ background: "black", color: "white" }}
+                >
+                  <Typography variant="h3" component="div">
                     {response.title}
                   </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                  <Grid container spacing={2} rowGap={12}>
+                    <Grid item xs={0.5} >
                       <img
                         src={response.author.image}
                         alt="auth"
@@ -60,11 +65,12 @@ function Article() {
                     </Grid>
                   </Grid>
                 </Grid>
+                <Grid item xs={12}></Grid>
               </Grid>
             </Grid>
             <Grid item xs={12}>
               <Typography
-                sx={{ fontSize: 14 }}
+                sx={{ fontSize: 20 }}
                 color="text.secondary"
                 gutterBottom
               >
