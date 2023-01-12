@@ -13,6 +13,7 @@ import moment from "moment";
 import Chip from "@mui/material/Chip";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
+import Progress from "../progress/Progress";
 
 function TabPanel(props) {
   let { children, value, index, ...other } = props;
@@ -45,6 +46,7 @@ class Home extends React.Component {
       error: "",
       visiblefilteredTab: false,
       tagToFilter: "",
+      loading:false
     };
   }
   handleChange = () => {
@@ -61,11 +63,15 @@ class Home extends React.Component {
   }
   handleClick = (tag) => {
     this.setState({ visiblefilteredTab: true, value: 1 });
+    this.setState({
+      loading:true
+    })
     axios
       .get(`https://api.realworld.io/api/articles?tag=${tag}&limit=10&offset=0`)
       .then((response) => {
         this.setState({
           filteredTagData: response.data,
+          loading:false
         });
       })
       .catch((error) => {
@@ -75,11 +81,15 @@ class Home extends React.Component {
       });
   };
   componentDidMount() {
+    this.setState({
+      loading:true
+    })
     axios
       .get(`https://api.realworld.io/api/articles`)
       .then((response) => {
         this.setState({
           articleData: response.data,
+          loading:false
         });
       })
       .catch((error) => {
@@ -88,11 +98,15 @@ class Home extends React.Component {
         });
       });
     //Tag Call
+     this.setState({
+       loading: true,
+     });
     axios
       .get(`https://api.realworld.io/api/tags`)
       .then((response) => {
         this.setState({
           tagList: response.data,
+          loading:false
         });
       })
       .catch((error) => {
@@ -147,6 +161,7 @@ class Home extends React.Component {
                     >
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          {this.state.loading ? <Progress /> : null}
                           {this.state.articleData.articles
                             ? this.state.articleData.articles.map((item) => {
                                 let { username, image } = item.author;
@@ -378,6 +393,7 @@ class Home extends React.Component {
             <Grid item xs={4}>
               <Box sx={{ p: 3, backgroundColor: "#f3f3f3", width: 400 }}>
                 <Typography>Popular Tags</Typography>
+                {this.state.loading ?? <Progress />}
                 {this.state.tagList.tags
                   ? this.state.tagList.tags.map((items) => {
                       return (

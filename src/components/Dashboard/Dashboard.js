@@ -13,6 +13,7 @@ import moment from "moment";
 import Chip from "@mui/material/Chip";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Link } from "react-router-dom";
+import Progress from "../progress/Progress";
 
 function TabPanel(props) {
   let { children, value, index, ...other } = props;
@@ -45,6 +46,7 @@ class Dashboard extends React.Component {
       error: "",
       visiblefilteredTab: false,
       tagToFilter: "",
+      loading : false,
     };
   }
   handleChange = () => {
@@ -63,12 +65,14 @@ class Dashboard extends React.Component {
     };
   }
   handleClick = (tag) => {
-    this.setState({ visiblefilteredTab: true, value: 1 });
+    this.setState({ visiblefilteredTab: true, value: 1 ,loading:true});
+
     axios
       .get(`https://api.realworld.io/api/articles?tag=${tag}&limit=10&offset=0`)
       .then((response) => {
         this.setState({
           filteredTagData: response.data,
+          loading:false,
         });
       })
       .catch((error) => {
@@ -83,6 +87,9 @@ class Dashboard extends React.Component {
       authorization: `Token ${userDetails.token}`,
       "Content-Type": "application/json",
     };
+     this.setState({
+      loading:true
+     })
     axios
       .get(`https://api.realworld.io/api/articles?limit=10&offset=0`, {
         method: "GET",
@@ -91,6 +98,7 @@ class Dashboard extends React.Component {
       .then((response) => {
         this.setState({
           articleData: response.data,
+          loading:false
         });
       })
       .catch((error) => {
@@ -99,11 +107,15 @@ class Dashboard extends React.Component {
         });
       });
     //Tag Call
+    this.setState({
+      loading:true
+    })
     axios
       .get(`https://api.realworld.io/api/tags`)
       .then((response) => {
         this.setState({
           tagList: response.data,
+          loading:false
         });
       })
       .catch((error) => {
@@ -160,6 +172,7 @@ class Dashboard extends React.Component {
                     >
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          {this.state.loading && <Progress />}
                           {this.state.articleData ? (
                             this.state.articleData.articlesCount === 0 ? (
                               <p>no Data </p>
@@ -253,6 +266,7 @@ class Dashboard extends React.Component {
                                               flexDirection: "row-reverse",
                                             }}
                                           >
+                                            {this.state.loading && <Progress />}
                                             {tagList.map((items) => {
                                               return (
                                                 <Chip
@@ -280,6 +294,7 @@ class Dashboard extends React.Component {
                     >
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          {this.state.loading && <Progress />}
                           {this.state.articleData ? (
                             this.state.articleData.articlesCount === 0 ? (
                               <p>no Data </p>
@@ -401,6 +416,7 @@ class Dashboard extends React.Component {
                     >
                       <Grid container spacing={2}>
                         <Grid item xs={12}>
+                          {this.state.loading && <Progress />}
                           {this.state.filteredTagData.articles
                             ? this.state.filteredTagData.articles.map(
                                 (item) => {

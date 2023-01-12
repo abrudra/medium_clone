@@ -91,7 +91,6 @@ class Login extends React.Component {
   };
   render() {
     let theme = createTheme();
-    //  console.log(this.props);
     return (
       <>
         <ThemeProvider theme={theme}>
