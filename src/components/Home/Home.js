@@ -46,7 +46,7 @@ class Home extends React.Component {
       error: "",
       visiblefilteredTab: false,
       tagToFilter: "",
-      loading:false
+      loading: false,
     };
   }
   handleChange = () => {
@@ -64,14 +64,14 @@ class Home extends React.Component {
   handleClick = (tag) => {
     this.setState({ visiblefilteredTab: true, value: 1 });
     this.setState({
-      loading:true
-    })
+      loading: true,
+    });
     axios
       .get(`https://api.realworld.io/api/articles?tag=${tag}&limit=10&offset=0`)
       .then((response) => {
         this.setState({
           filteredTagData: response.data,
-          loading:false
+          loading: false,
         });
       })
       .catch((error) => {
@@ -82,14 +82,14 @@ class Home extends React.Component {
   };
   componentDidMount() {
     this.setState({
-      loading:true
-    })
+      loading: true,
+    });
     axios
       .get(`https://api.realworld.io/api/articles`)
       .then((response) => {
         this.setState({
           articleData: response.data,
-          loading:false
+          loading: false,
         });
       })
       .catch((error) => {
@@ -98,15 +98,15 @@ class Home extends React.Component {
         });
       });
     //Tag Call
-     this.setState({
-       loading: true,
-     });
+    this.setState({
+      loading: true,
+    });
     axios
       .get(`https://api.realworld.io/api/tags`)
       .then((response) => {
         this.setState({
           tagList: response.data,
-          loading:false
+          loading: false,
         });
       })
       .catch((error) => {
@@ -126,9 +126,9 @@ class Home extends React.Component {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} sx={{ flexGrow: 1, background: "#f3f3f3" }}>
+            <Grid item xs={12} sx={{ flexGrow: 1, background: "#ffbc00" }}>
               <img
-                src="https://miro.medium.com/max/1200/1*jfdwtvU6V6g99q3G7gq7dQ.png"
+                src="https://miro.medium.com/1*5ER2KRyL5S0S_xX8Pf0lgg.png"
                 alt="img"
                 loading="lazy"
                 style={{

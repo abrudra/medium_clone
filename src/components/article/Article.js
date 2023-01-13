@@ -8,6 +8,8 @@ import Container from "@mui/material/Container";
 import moment from "moment";
 import Chip from "@mui/material/Chip";
 import { Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 function Article() {
   const { slug } = useParams();
@@ -26,12 +28,13 @@ function Article() {
     };
     apiCall(slug);
   }, [slug]);
+  console.log(response && response.author.username);
   const handleEdit = (data) => {
     history.push(`/edit-article/${data}`);
   };
 
+  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   const handleDelete = async (data) => {
-    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
     const headers = {
       authorization: `Token ${userDetails.token}`,
       "Content-Type": "application/json",
@@ -45,8 +48,11 @@ function Article() {
     if (response.status === 204) {
       history.push(`/dashboard`);
     }
-    console.log(response);
+
   };
+
+ 
+
   return (
     <Container component="main">
       <Box
@@ -58,15 +64,11 @@ function Article() {
         }}
       >
         {response ? (
-          <Grid container spacing={2}>
-            <Grid item xs={12} container>
-              <Grid container spacing={5}>
-                <Grid
-                  item
-                  xs={12}
-                  style={{ background: "black", color: "white" }}
-                >
-                  <Typography variant="h3" component="div">
+          <Grid container spacing={1}>
+            <Grid item xs={10} container>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sx={{ background: "", color: "black" }}>
+                  <Typography variant="h4" component="div">
                     {response.title}
                   </Typography>
                   <Grid container spacing={2} rowGap={12}>
@@ -79,22 +81,33 @@ function Article() {
                         }}
                       />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid
+                      item
+                      xs={6}
+                      style={{ display: "flex", columnGap: "1rem" }}
+                    >
                       {response.author.username}
                       <br />
                       {moment(response.updatedAt).format("llll")}
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleEdit(response.slug)}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleDelete(response.slug)}
-                      >
-                        Delete
-                      </Button>
+
+                      {response && response.author.username === userDetails.username ? (
+                        <div>
+                          <Button
+                            onClick={() => handleEdit(response.slug)}
+                            startIcon={<BorderColorIcon />}
+                            style={{ color: "black" }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            startIcon={<DeleteIcon />}
+                            onClick={() => handleDelete(response.slug)}
+                            style={{ color: "black" }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      ) : null}
                     </Grid>
                   </Grid>
                 </Grid>

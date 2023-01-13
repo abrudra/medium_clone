@@ -139,19 +139,6 @@ class Dashboard extends React.Component {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12} sx={{ flexGrow: 1, background: "#f3f3f3" }}>
-              <img
-                src="https://miro.medium.com/max/1200/1*jfdwtvU6V6g99q3G7gq7dQ.png"
-                alt="img"
-                loading="lazy"
-                style={{
-                  width: "100%",
-                  height: "400px",
-                  objectFit: "contain",
-                  marginTop: "1px",
-                }}
-              />
-            </Grid>
             <Grid item xs={8}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>

@@ -11,7 +11,7 @@ function Navbar({ children }) {
 
   return (
     <>
-      <AppBar component="nav" sx={{ background: "#cdd0d1", color: "black" }}>
+      <AppBar component="nav" sx={{ background: "#ffbc00", color: "black" }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -51,7 +51,7 @@ function Navbar({ children }) {
                     sx={{ color: "black" }}
                     onClick={() => {
                       localStorage.clear();
-                     window.location.href = "/";
+                      window.location.href = "/";
                     }}
                   >
                     {userDetails.username}
@@ -69,9 +69,10 @@ function Navbar({ children }) {
                 <NavLink to="sign-up" style={{ textDecoration: "none" }}>
                   <Button sx={{ color: "black" }}>SignUp</Button>
                 </NavLink>
-                <NavLink to="article/" style={{ textDecoration: "none" }}>
-                  
-                </NavLink>
+                <NavLink
+                  to="article/"
+                  style={{ textDecoration: "none" }}
+                ></NavLink>
               </>
             )}
           </Box>

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 
-function Setting() {
-  return <div>Setting</div>;
+class Setting extends Component{
+  render(){
+    return(
+      <></>
+    )
+  }
 }
 
 export default Setting;

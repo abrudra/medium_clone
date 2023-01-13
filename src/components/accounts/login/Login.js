@@ -52,6 +52,7 @@ class Login extends React.Component {
               },
             });
             localStorage.setItem("userDetails", JSON.stringify(result.user));
+            // localStorage.setItem("username", JSON.stringify(result.user.username));
             localStorage.setItem("isLoggedIn", "true");
             window.location.href = "/dashboard";
           } else {
