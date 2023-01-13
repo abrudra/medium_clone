@@ -5,6 +5,7 @@ import Home from "../Home/Home";
 import NewPost from "../NewPost/NewPost";
 import Setting from "../Setting/Setting";
 import Article from "../article/Article";
+import EditArticle from "../article/EditArticle";
 class Route {
   constructor({ path, component, title, exact = true, authRequired = true }) {
     this.path = path;
@@ -52,7 +53,13 @@ const routes = [
     path: "/article/:slug",
     title: "article",
     component: Article,
-    authRequired:false
+    authRequired: false,
+  }),
+  new Route({
+    path: "/edit-article/:slug",
+    title: "edit-article",
+    component: EditArticle,
+    authRequired: false,
   }),
 ];
 

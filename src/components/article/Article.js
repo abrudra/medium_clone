@@ -2,21 +2,23 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import moment from "moment";
 import Chip from "@mui/material/Chip";
-  
+import { Button } from "@mui/material";
+
 function Article() {
   const { slug } = useParams();
   const [response, setResponse] = useState(null);
-  
+  const history = useHistory();
   useEffect(() => {
     const apiCall = async (data) => {
       try {
-        const response = await axios
-          .get(`https://api.realworld.io/api/articles/${data}`);
+        const response = await axios.get(
+          `https://api.realworld.io/api/articles/${data}`
+        );
         setResponse(response.data.article);
       } catch (error) {
         console.log("error");
@@ -24,7 +26,27 @@ function Article() {
     };
     apiCall(slug);
   }, [slug]);
+  const handleEdit = (data) => {
+    history.push(`/edit-article/${data}`);
+  };
 
+  const handleDelete = async (data) => {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    const headers = {
+      authorization: `Token ${userDetails.token}`,
+      "Content-Type": "application/json",
+    };
+    const response = await axios.delete(
+      `https://api.realworld.io/api/articles/${data}`,
+      {
+        headers: headers,
+      }
+    );
+    if (response.status === 204) {
+      history.push(`/dashboard`);
+    }
+    console.log(response);
+  };
   return (
     <Container component="main">
       <Box
@@ -41,7 +63,6 @@ function Article() {
               <Grid container spacing={5}>
                 <Grid
                   item
-                 
                   xs={12}
                   style={{ background: "black", color: "white" }}
                 >
@@ -49,7 +70,7 @@ function Article() {
                     {response.title}
                   </Typography>
                   <Grid container spacing={2} rowGap={12}>
-                    <Grid item xs={0.5} >
+                    <Grid item xs={0.5}>
                       <img
                         src={response.author.image}
                         alt="auth"
@@ -62,6 +83,18 @@ function Article() {
                       {response.author.username}
                       <br />
                       {moment(response.updatedAt).format("llll")}
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleEdit(response.slug)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleDelete(response.slug)}
+                      >
+                        Delete
+                      </Button>
                     </Grid>
                   </Grid>
                 </Grid>

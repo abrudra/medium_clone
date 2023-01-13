@@ -36,8 +36,8 @@ function TabPanel(props) {
 }
 
 class Dashboard extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       value: 0,
       articleData: [],
@@ -124,8 +124,12 @@ class Dashboard extends React.Component {
         });
       });
   }
+  handleOnclickReadMore = (url) => {
+    this.props.history.push(`/article/${url}`);
+  };
   render() {
     const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
     return (
       <>
         <Box
@@ -255,7 +259,14 @@ class Dashboard extends React.Component {
                                       <CardActions>
                                         <Grid container spacing={2}>
                                           <Grid item xs={6}>
-                                            <span> Read More..</span>
+                                            <span
+                                              onClick={() =>
+                                                this.handleOnclickReadMore(slug)
+                                              }
+                                            >
+                                              {" "}
+                                              Read More..
+                                            </span>
                                           </Grid>
                                           <Grid
                                             item
