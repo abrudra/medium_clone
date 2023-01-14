@@ -12,7 +12,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 function Article() {
-  const { slug } = useParams();
+  const { validate, slug } = useParams();
+  console.log(validate);
   const [response, setResponse] = useState(null);
   const history = useHistory();
   useEffect(() => {
@@ -48,10 +49,7 @@ function Article() {
     if (response.status === 204) {
       history.push(`/dashboard`);
     }
-
   };
-
- 
 
   return (
     <Container component="main">
@@ -90,7 +88,7 @@ function Article() {
                       <br />
                       {moment(response.updatedAt).format("llll")}
 
-                      {response && response.author.username === userDetails.username ? (
+                      {userDetails && validate !== "global" ? (
                         <div>
                           <Button
                             onClick={() => handleEdit(response.slug)}

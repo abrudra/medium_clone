@@ -50,7 +50,7 @@ const routes = [
     component: Setting,
   }),
   new Route({
-    path: "/article/:slug",
+    path: "/article/:validate/:slug",
     title: "article",
     component: Article,
     authRequired: false,

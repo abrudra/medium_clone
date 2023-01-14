@@ -219,7 +219,7 @@ class Home extends React.Component {
                                         </Grid>
                                       </Grid>
                                       <Link
-                                        to={`/article/${slug}`}
+                                        to={`/article/global/${slug}`}
                                         style={{ textDecoration: "none" }}
                                       >
                                         <Typography
@@ -339,7 +339,7 @@ class Home extends React.Component {
                                             </Grid>
                                           </Grid>
                                         </Grid>
-                                        <Link to={`/article/${slug}`}>
+                                        <Link to={`/article/global/${slug}`}>
                                           <Typography
                                             variant="h6"
                                             component="div"

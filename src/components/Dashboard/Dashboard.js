@@ -227,7 +227,7 @@ class Dashboard extends React.Component {
                                             </Grid>
                                           </Grid>
                                         </Grid>
-                                        <Link to={`/article/${slug}`}>
+                                        <Link to={`/article/your-feed/${slug}`}>
                                           <Typography
                                             variant="h6"
                                             component="div"
@@ -356,7 +356,7 @@ class Dashboard extends React.Component {
                                             </Grid>
                                           </Grid>
                                         </Grid>
-                                        <Link to={`/article/${slug}`}>
+                                        <Link to={`/article/global/${slug}`}>
                                           <Typography
                                             variant="h6"
                                             component="div"
@@ -473,7 +473,7 @@ class Dashboard extends React.Component {
                                             </Grid>
                                           </Grid>
                                         </Grid>
-                                        <Link to={`/article/${slug}`}>
+                                        <Link to={`/article/global/${slug}`}>
                                           <Typography
                                             variant="h6"
                                             component="div"

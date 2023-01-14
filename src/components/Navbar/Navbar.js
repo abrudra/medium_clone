@@ -63,14 +63,14 @@ function Navbar({ children }) {
                 <NavLink to="/" style={{ textDecoration: "none" }}>
                   <Button sx={{ color: "black" }}>Home</Button>
                 </NavLink>
-                <NavLink to="login" style={{ textDecoration: "none" }}>
+                <NavLink to="/login" style={{ textDecoration: "none" }}>
                   <Button sx={{ color: "black" }}>Login</Button>
                 </NavLink>
-                <NavLink to="sign-up" style={{ textDecoration: "none" }}>
+                <NavLink to="/sign-up" style={{ textDecoration: "none" }}>
                   <Button sx={{ color: "black" }}>SignUp</Button>
                 </NavLink>
                 <NavLink
-                  to="article/"
+                  to="/article/"
                   style={{ textDecoration: "none" }}
                 ></NavLink>
               </>
